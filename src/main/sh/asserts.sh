@@ -48,7 +48,7 @@ assert_true(){
 	    else 
 	    	echo -e "`get_caller_info`: ${RED}Assert FAIL! $1${NC}"
 	    fi
-		echo -e "${RED}     ${FUNCNAME[0]}: |$VALUE| is NOT |true|${NC}"
+		echo -e "${RED}     ${FUNCNAME[0]}: |$VALUE| is NOT true${NC}"
 		TEST_STATUS="FAIL"
 		return 1;
 	fi
@@ -69,7 +69,7 @@ assert_false(){
 	    else 
 	    	echo -e "`get_caller_info`: ${RED}Assert FAIL! $1${NC}"
 	    fi
-	    echo -e "${RED}     ${FUNCNAME[0]}: |$VALUE| is NOT |false|${NC}"
+	    echo -e "${RED}     ${FUNCNAME[0]}: |$VALUE| is NOT false${NC}"
 		TEST_STATUS="FAIL"
 		return 1;
 	else
