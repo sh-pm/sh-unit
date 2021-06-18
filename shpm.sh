@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ../../../bootstrap.sh
+source ./bootstrap.sh
 
 # Evict catastrophic rm's
 if [[ -z "$ROOT_DIR_PATH" ]]; then
@@ -324,6 +324,14 @@ update_dependency() {
 			cp "/tmp/$DEP_ARTIFACT_ID/src/main/sh/"* .
 			cp "/tmp/$DEP_ARTIFACT_ID/pom.sh" .
 			
+			if [[ "$DEP_ARTIFACT_ID" == "sh-pm" ]]; then
+				shpm_log "     - Copy bootstrap.sh to $LIB_DIR_PATH/$DEP_FOLDER_NAME ..."
+				cp "/tmp/$DEP_ARTIFACT_ID/bootstrap.sh" .
+				
+				shpm_log "     - Update bootstrap.sh sourcing command from shpm.sh file ..."
+	   			sed -i 's/source \.\.\/\.\.\/\.\.\/bootstrap.sh/source \.\/bootstrap.sh/g' shpm.sh
+			fi
+			
 			cd /tmp || exit
 			
 			shpm_log "   - Removing /tmp/$DEP_ARTIFACT_ID ..."
@@ -513,6 +521,10 @@ run_shellcheck() {
     
     if [[ ! -z "$SHELLCHECK_CMD" ]]; then
 	    shpm_log_operation "Running ShellCheck in .sh files ..."
+	    
+	    if [[ ! -d "$TARGET_DIR_PATH" ]]; then
+	    	mkdir -p "$TARGET_DIR_PATH"
+	    fi
 	    
 	    for FILE_TO_CHECK in $SRC_DIR_PATH/*.sh; do        
 	    
