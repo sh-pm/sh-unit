@@ -8,7 +8,7 @@ ESC_CHAR='\033'
 
 RED=$ESC_CHAR'[0;31m'
 GREEN=$ESC_CHAR'[0;32m'
-YELLOW=$ESC_CHAR'[0;93m'
+
 NC=$ESC_CHAR'[0m' # No Color
 
 string_start_with(){
@@ -24,9 +24,9 @@ string_start_with(){
 
 run_all_tests_in_this_script() {
 
-	TEST_CASE_TOTAL_COUNT=0;
-	TEST_CASE_SUCCESS_COUNT=0;
-	TEST_CASE_FAIL_COUNT=0;
+	export TEST_CASE_TOTAL_COUNT=0;
+	export TEST_CASE_SUCCESS_COUNT=0;
+	export TEST_CASE_FAIL_COUNT=0;
 
 	SCRIPT_NAME_TO_RUN_TESTS="$(basename "${BASH_SOURCE[1]}")"
 
@@ -35,7 +35,7 @@ run_all_tests_in_this_script() {
 	echo "-------------------------------------------------------------"
 
     if [ $# -eq 0 ];  then
-	    FUNCTIONS_TO_TEST=( `grep -E '^[[:space:]]*([[:alnum:]_]+[[:space:]]*\(\)|function[[:space:]]+[[:alnum:]_]+)' $SCRIPT_NAME_TO_RUN_TESTS | tr \(\)\}\{ ' ' | sed 's/^[ \t]*//;s/[ \t]*$//'` );
+	    FUNCTIONS_TO_TEST=( $( grep -E '^[[:space:]]*([[:alnum:]_]+[[:space:]]*\(\)|function[[:space:]]+[[:alnum:]_]+)' "$SCRIPT_NAME_TO_RUN_TESTS" | tr \(\)\}\{ ' ' | sed 's/^[ \t]*//;s/[ \t]*$//' ) );
     else 
     	FUNCTIONS_TO_TEST=( $@ );    
     fi
@@ -46,29 +46,33 @@ run_all_tests_in_this_script() {
 	#    echo "|$FUNCTION_NAME|"
 	#done
 
-	for FUNCTION_NAME in ${FUNCTIONS_TO_TEST[@]}
+	for FUNCTION_NAME in "${FUNCTIONS_TO_TEST[@]}"
 	do
-		if (string_start_with $FUNCTION_NAME "test_"); then
+		if (string_start_with "$FUNCTION_NAME" "test_"); then
 			$FUNCTION_NAME
 		fi
 		
 		#TODO: Fix this part before release - start
+		#
 		#if [[ $? != 0 ]]; then
 		#	TEST_CASE_FAIL_COUNT=$((TEST_CASE_FAIL_COUNT+1))
 		#else
 		#	TEST_CASE_SUCCESS_COUNT=$((TEST_CASE_SUCCESS_COUNT+1))
 		#fi
+		#
 		#TODO: Fix this part before release - end
 		
-		TEST_CASE_TOTAL_COUNT=$((TEST_CASE_TOTAL_COUNT+1))
+		export TEST_CASE_TOTAL_COUNT=$((TEST_CASE_TOTAL_COUNT+1))
 	done
 	
 	echo "-------------------------------------------------------------"
 	echo "Finish. $TEST_CASE_TOTAL_COUNT tests executed"
 	
 	#TODO: Fix this part before release - start
+	#
 	#echo " Success: $TEST_CASE_SUCCESS_COUNT"
 	#echo " Fail:    $TEST_CASE_FAIL_COUNT"
+	#
 	#TODO: Fix this part before release - end
 	
 	if [[ $TEST_STATUS == "FAIL" ]]; then 
