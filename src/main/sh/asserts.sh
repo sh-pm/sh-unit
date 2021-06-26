@@ -52,7 +52,7 @@ assert_true(){
 	    fi
 		echo -e "${RED}     ${FUNCNAME[0]}: |$VALUE| is NOT true${NC}"
 		export TEST_STATUS="FAIL"
-		return "$FALSE";;
+		return "$FALSE";
 	fi
 }	
 
