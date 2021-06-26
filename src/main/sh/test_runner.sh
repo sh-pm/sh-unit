@@ -30,9 +30,9 @@ run_all_tests_in_this_script() {
 
 	SCRIPT_NAME_TO_RUN_TESTS="$(basename "${BASH_SOURCE[1]}")"
 
-	echo "-------------------------------------------------------------"
+	echo ""
 	echo "Running tests in $SCRIPT_NAME_TO_RUN_TESTS ..."
-	echo "-------------------------------------------------------------"
+	echo ""
 
     if [ $# -eq 0 ];  then
 	    FUNCTIONS_TO_TEST=( $( grep -E '^[[:space:]]*([[:alnum:]_]+[[:space:]]*\(\)|function[[:space:]]+[[:alnum:]_]+)' "$SCRIPT_NAME_TO_RUN_TESTS" | tr \(\)\}\{ ' ' | sed 's/^[ \t]*//;s/[ \t]*$//' ) );
@@ -49,6 +49,7 @@ run_all_tests_in_this_script() {
 	for FUNCTION_NAME in "${FUNCTIONS_TO_TEST[@]}"
 	do
 		if (string_start_with "$FUNCTION_NAME" "test_"); then
+			echo "-------------------------------------------------------------"
 			$FUNCTION_NAME
 		fi
 		
@@ -75,12 +76,13 @@ run_all_tests_in_this_script() {
 	#
 	#TODO: Fix this part before release - end
 	
+	echo ""
 	if [[ $TEST_STATUS == "FAIL" ]]; then 
 		echo -e "Result: ${RED}$TEST_STATUS${NC}"
 	else		
 		echo -e "Result: ${GREEN}$TEST_STATUS${NC}"
 	fi
-	echo "-------------------------------------------------------------"
+	echo ""
 	
 	if [[ $TEST_STATUS == "FAIL" ]]; then
 		return 1;
