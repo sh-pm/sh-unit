@@ -26,19 +26,19 @@ export TESTCASE_ASSERTIONS_FAIL_COUNT=0
 export TESTCASE_ASSERTIONS_SUCCESS_COUNT=0
 
 get_caller_info(){
-	echo "$( basename "${BASH_SOURCE[1]}" ) (${BASH_LINENO[1]}), ${FUNCNAME[2]} -> ${FUNCNAME[1]}"
+	echo "$( basename "${BASH_SOURCE[2]}" ) (l. ${BASH_LINENO[1]})"
 }
 
 assert_equals(){
-	log_trace "PARAM1: |$1|"
-	log_trace "PARAM2: |$2|"
+	
+	local ASSERT_DESCRIPTION="$3"
 	
 	export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
 	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
 
 	if [[ "$1" == "$2" ]]; then
 	
-		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success!${ECHO_COLOR_NC}"
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 		
 		export ASSERTIONS_SUCCESS_COUNT=$((ASSERTIONS_SUCCESS_COUNT+1))
 		export TESTCASE_ASSERTIONS_SUCCESS_COUNT=$((TESTCASE_ASSERTIONS_SUCCESS_COUNT+1))
@@ -46,7 +46,7 @@ assert_equals(){
 		return "$TRUE"
 		
 	else
-		echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL!${ECHO_COLOR_NC}"		
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"		
 		echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: |$1| is NOT EQUALs |$2|${ECHO_COLOR_NC}"
 
 		export ASSERTIONS_FAIL_COUNT=$((ASSERTIONS_FAIL_COUNT+1))		 
@@ -60,9 +60,108 @@ assert_equals(){
 }
 
 
+assert_contains(){
+	
+	local ASSERT_DESCRIPTION="$3"
+	
+	export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
+	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
+
+	if [[ "$1" == *"$2"* ]]; then
+	
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
+		
+		export ASSERTIONS_SUCCESS_COUNT=$((ASSERTIONS_SUCCESS_COUNT+1))
+		export TESTCASE_ASSERTIONS_SUCCESS_COUNT=$((TESTCASE_ASSERTIONS_SUCCESS_COUNT+1))
+		
+		return "$TRUE"
+		
+	else
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"		
+		echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: |$1| NOT contains |$2|${ECHO_COLOR_NC}"
+
+		export ASSERTIONS_FAIL_COUNT=$((ASSERTIONS_FAIL_COUNT+1))		 
+		export TESTCASE_ASSERTIONS_FAIL_COUNT=$((TESTCASE_ASSERTIONS_FAIL_COUNT+1))
+		 
+		TEST_EXECUTION_STATUS="$STATUS_ERROR"
+		LAST_TESTCASE_EXECUTION_STATUS="$STATUS_ERROR"
+		
+		return "$FALSE"
+	fi
+}
+
+assert_start_with(){
+	
+	local ASSERT_DESCRIPTION="$3"
+	
+	export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
+	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
+	
+	if [[ ! -z "$1" && ! -z "$2" && "$1" =~ .*"$2" ]]; then
+	
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
+		
+		export ASSERTIONS_SUCCESS_COUNT=$((ASSERTIONS_SUCCESS_COUNT+1))
+		export TESTCASE_ASSERTIONS_SUCCESS_COUNT=$((TESTCASE_ASSERTIONS_SUCCESS_COUNT+1))
+		
+		return "$TRUE"
+	else
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
+				
+		if [[ ! -z "$1" || ! -z "$2" ]]; then 
+			echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: Receive empty param(s): 1->|$1|, 2->|$2|${ECHO_COLOR_NC}"		
+		else
+			echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: |$1| NOT start with |$2|${ECHO_COLOR_NC}"		
+		fi
+	
+		export ASSERTIONS_FAIL_COUNT=$((ASSERTIONS_FAIL_COUNT+1))		 
+		export TESTCASE_ASSERTIONS_FAIL_COUNT=$((TESTCASE_ASSERTIONS_FAIL_COUNT+1))
+		 
+		TEST_EXECUTION_STATUS="$STATUS_ERROR"
+		LAST_TESTCASE_EXECUTION_STATUS="$STATUS_ERROR"
+		
+		return "$FALSE"
+	fi
+}
+
+assert_end_with(){
+	
+	local ASSERT_DESCRIPTION="$3"
+	
+	export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
+	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
+	
+	if [[ ! -z "$1" && ! -z "$2" && "$1" =~ "$2".* ]]; then
+	
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
+		
+		export ASSERTIONS_SUCCESS_COUNT=$((ASSERTIONS_SUCCESS_COUNT+1))
+		export TESTCASE_ASSERTIONS_SUCCESS_COUNT=$((TESTCASE_ASSERTIONS_SUCCESS_COUNT+1))
+		
+		return "$TRUE"
+	else
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
+				
+		if [[ ! -z "$1" || ! -z "$2" ]]; then 
+			echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: Receive empty param(s): 1->|$1|, 2->|$2|${ECHO_COLOR_NC}"		
+		else
+			echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: |$1| NOT end with |$2|${ECHO_COLOR_NC}"		
+		fi
+	
+		export ASSERTIONS_FAIL_COUNT=$((ASSERTIONS_FAIL_COUNT+1))		 
+		export TESTCASE_ASSERTIONS_FAIL_COUNT=$((TESTCASE_ASSERTIONS_FAIL_COUNT+1))
+		 
+		TEST_EXECUTION_STATUS="$STATUS_ERROR"
+		LAST_TESTCASE_EXECUTION_STATUS="$STATUS_ERROR"
+		
+		return "$FALSE"
+	fi
+}
+
+
 assert_true(){
-    local VALUE=$1
-    local MSG_IF_FAIL=$2
+    local VALUE="$1"
+    local ASSERT_DESCRIPTION="$2"
     
     export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
 	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
@@ -73,18 +172,14 @@ assert_true(){
     fi
 
 	if [[ "$VALUE" == "$TRUE" ]]; then
-		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success!${ECHO_COLOR_NC}"
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 		
 		export ASSERTIONS_SUCCESS_COUNT=$((ASSERTIONS_SUCCESS_COUNT+1))
 		export TESTCASE_ASSERTIONS_SUCCESS_COUNT=$((TESTCASE_ASSERTIONS_SUCCESS_COUNT+1))
 		
 		return "$TRUE";
 	else
-		if [[ -z "$MSG_IF_FAIL" ]]; then
-	    	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL!${ECHO_COLOR_NC}"
-	    else 
-	    	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $1${ECHO_COLOR_NC}"
-	    fi
+    	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 		echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: |$VALUE| is NOT true${ECHO_COLOR_NC}"
 		
 		export ASSERTIONS_FAIL_COUNT=$((ASSERTIONS_FAIL_COUNT+1))
@@ -98,8 +193,8 @@ assert_true(){
 }	
 
 assert_false(){
-	local VALUE=$1
-    local MSG_IF_FAIL=$2
+	local VALUE="$1"
+    local ASSERT_DESCRIPTION="$2"
     
     export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
 	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
@@ -110,11 +205,7 @@ assert_false(){
     fi
 
 	if [[ $VALUE == "$TRUE" ]]; then
-		if [[ -z $MSG_IF_FAIL ]]; then
-	    	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL!${ECHO_COLOR_NC}"
-	    else 
-	    	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $1${ECHO_COLOR_NC}"
-	    fi
+    	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 	    
 	    echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: |$VALUE| is NOT false${ECHO_COLOR_NC}"
 	    
@@ -126,7 +217,7 @@ assert_false(){
 		
 		return "$FALSE";
 	else
-		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success!${ECHO_COLOR_NC}"
+		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 		
 		export ASSERTIONS_SUCCESS_COUNT=$((ASSERTIONS_SUCCESS_COUNT+1))
 		export TESTCASE_ASSERTIONS_SUCCESS_COUNT=$((TESTCASE_ASSERTIONS_SUCCESS_COUNT+1))
@@ -137,16 +228,14 @@ assert_false(){
 
 assert_fail(){
 
+	local ASSERT_DESCRIPTION="$1"
+
 	export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
 	export ASSERTIONS_FAIL_COUNT=$((ASSERTIONS_FAIL_COUNT+1))
 	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
 	export TESTCASE_ASSERTIONS_FAIL_COUNT=$((TESTCASE_ASSERTIONS_FAIL_COUNT+1))
 
-    if [[ -z $1 ]]; then
-    	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL!${ECHO_COLOR_NC}"
-    else 
-    	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $1${ECHO_COLOR_NC}"
-    fi
+	echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
     
 	TEST_EXECUTION_STATUS="$STATUS_ERROR"
 	LAST_TESTCASE_EXECUTION_STATUS="$STATUS_ERROR"
@@ -156,12 +245,14 @@ assert_fail(){
 
 assert_success(){
 
+	local ASSERT_DESCRIPTION="$1"
+
 	export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
 	export ASSERTIONS_SUCCESS_COUNT=$((ASSERTIONS_SUCCESS_COUNT+1))
 	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
 	export TESTCASE_ASSERTIONS_SUCCESS_COUNT=$((TESTCASE_ASSERTIONS_SUCCESS_COUNT+1))
 
-    echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success!${ECHO_COLOR_NC}"
+    echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
     
     return "$TRUE"	
 }
