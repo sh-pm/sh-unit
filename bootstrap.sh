@@ -31,12 +31,20 @@ if [[ -z "$SRC_DIR_SUBPATH" ]]; then
 	SRC_DIR_SUBPATH="src/main/sh"
 fi
 
+if [[ -z "$SRC_RESOURCES_DIR_SUBPATH" ]]; then
+	SRC_RESOURCES_DIR_SUBPATH="src/main/resources"
+fi
+
 if [[ -z "$LIB_DIR_SUBPATH" ]]; then
 	LIB_DIR_SUBPATH="src/lib/sh"
 fi
 
 if [[ -z "$TEST_DIR_SUBPATH" ]]; then
 	TEST_DIR_SUBPATH="src/test/sh"
+fi
+
+if [[ -z "$TEST_RESOURCES_DIR_SUBPATH" ]]; then
+	TEST_RESOURCES_DIR_SUBPATH="src/test/resources"
 fi
 
 if [[ -z "$TARGET_DIR_SUBPATH" ]]; then
@@ -48,6 +56,11 @@ if [[ -z "$ROOT_DIR_PATH" ]]; then
 	THIS_SCRIPT_FOLDER_PATH="$( dirname "$(realpath "${BASH_SOURCE[0]}")" )"
 	ROOT_DIR_PATH="${THIS_SCRIPT_FOLDER_PATH//$SRC_DIR_SUBPATH/}"		
 	internal_debug "ROOT_DIR_PATH: $ROOT_DIR_PATH"
+fi
+
+if [[ -z "$SRC_RESOURCES_DIR_PATH" ]]; then
+	SRC_RESOURCES_DIR_PATH="$ROOT_DIR_PATH/$SRC_RESOURCES_DIR_SUBPATH"
+	internal_debug "SRC_RESOURCES_DIR_PATH: $SRC_RESOURCES_DIR_PATH"
 fi
 
 if [[ -z "$SRC_DIR_PATH" ]]; then
@@ -67,6 +80,14 @@ if [[ -z "$TEST_DIR_PATH" ]]; then
 	FOLDERNAME_4TEST="folder4test"
 	FILENAME_4TEST="file4test"
 	PROJECTNAME_4TEST="sh-project-only-4tests"	
+	PROJECTVERSION_4TEST="v0.2.0"
+	NEWBRANCH_4TEST="newbranch4test"
+	CHANGELOG_4TEST="changelog4test"
+fi
+
+if [[ -z "$TEST_RESOURCES_DIR_PATH" ]]; then
+	TEST_RESOURCES_DIR_PATH="$ROOT_DIR_PATH/$TEST_RESOURCES_DIR_SUBPATH"
+	internal_debug "TEST_RESOURCES_DIR_PATH: $TEST_RESOURCES_DIR_PATH"
 fi
 
 if [[ -z "$TARGET_DIR_PATH" ]]; then
@@ -83,6 +104,12 @@ if [[ -z "$TMP_DIR_PATH" ]]; then
 	
 fi
 
+# -- manifest file -------------------
+MANIFEST_FILENAME="manifest"
+MANIFEST_FILE_PATH="$SRC_RESOURCES_DIR_PATH/$MANIFEST_FILENAME"
+MANIFEST_P_ENTRY_POINT_FILE="entry_point_file"
+MANIFEST_P_ENTRY_POINT_FUNCTION="entry_point_function"
+
 # =================================
 # echo -e colors
 # =================================
@@ -95,7 +122,7 @@ ECHO_COLOR_NC=$ECHO_COLOR_ESC_CHAR'[0m' # No Color
 # =================================
 # Load dependencies
 # =================================
-source "$ROOT_DIR_PATH/pom.sh"
+source "$ROOT_DIR_PATH/$DEPENDENCIES_FILENAME"
 
 # =================================
 # Include Management Libs and Files

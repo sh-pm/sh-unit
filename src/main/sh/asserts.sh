@@ -1,29 +1,8 @@
 #!/bin/bash
-# v1.5.0 - Build with sh-pm
 
- 
-# =================================
-# echo -e colors
-# =================================
-ECHO_COLOR_ESC_CHAR='\033'
-ECHO_COLOR_RED=$ECHO_COLOR_ESC_CHAR'[0;31m'
-ECHO_COLOR_YELLOW=$ECHO_COLOR_ESC_CHAR'[0;93m'
-ECHO_COLOR_GREEN=$ECHO_COLOR_ESC_CHAR'[0;32m'	
-ECHO_COLOR_NC=$ECHO_COLOR_ESC_CHAR'[0m' # No Color
+source ../../../bootstrap.sh
 
-export STATUS_OK="$TRUE"
-export STATUS_ERROR="$FALSE"
-
-export TEST_EXECUTION_STATUS="$STATUS_OK"
-export LAST_TESTCASE_EXECUTION_STATUS="$STATUS_OK"
-
-export ASSERTIONS_TOTAL_COUNT=0
-export ASSERTIONS_FAIL_COUNT=0
-export ASSERTIONS_SUCCESS_COUNT=0
-
-export TESTCASE_ASSERTIONS_TOTAL_COUNT=0
-export TESTCASE_ASSERTIONS_FAIL_COUNT=0
-export TESTCASE_ASSERTIONS_SUCCESS_COUNT=0
+include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 
 get_caller_info(){
 	echo "$( basename "${BASH_SOURCE[2]}" ) (l. ${BASH_LINENO[1]})"

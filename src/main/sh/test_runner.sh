@@ -4,71 +4,8 @@ source ../../../bootstrap.sh
 
 include_lib sh-logger
 
-# =================================
-# echo -e colors
-# =================================
-ECHO_COLOR_ESC_CHAR='\033'
-ECHO_COLOR_RED=$ECHO_COLOR_ESC_CHAR'[0;31m'
-ECHO_COLOR_YELLOW=$ECHO_COLOR_ESC_CHAR'[0;93m'
-ECHO_COLOR_GREEN=$ECHO_COLOR_ESC_CHAR'[0;32m'	
-ECHO_COLOR_NC=$ECHO_COLOR_ESC_CHAR'[0m' # No Color
-
-TEST_FUNCTION_PREFIX="test_"
-
-export TESTCASE_TOTAL_COUNT=0
-export TESTCASE_FAIL_COUNT=0
-export TESTCASE_SUCCESS_COUNT=0
-
-export ASSERTIONS_TOTAL_COUNT=0
-export ASSERTIONS_FAIL_COUNT=0
-export ASSERTIONS_SUCCESS_COUNT=0
-
-export TESTCASE_ASSERTIONS_TOTAL_COUNT=0
-export TESTCASE_ASSERTIONS_FAIL_COUNT=0
-export TESTCASE_ASSERTIONS_SUCCESS_COUNT=0
-
-
-string_start_with(){
-	STRING=$1
-	SUBSTRING=$2
-	if [[ $STRING == "$SUBSTRING"* ]]; then
-		return 0;
-	else
-		return 1;
-	fi
-}
-
-
-reset_g_test_counters() {
-	TESTCASE_TOTAL_COUNT=0
-	TESTCASE_FAIL_COUNT=0
-	TESTCASE_SUCCESS_COUNT=0
-	
-	ASSERTIONS_TOTAL_COUNT=0
-	ASSERTIONS_FAIL_COUNT=0
-	ASSERTIONS_SUCCESS_COUNT=0
-	
-	reset_testcase_counters
-}
-
-reset_testcase_counters() {
-	TESTCASE_ASSERTIONS_TOTAL_COUNT=0
-	TESTCASE_ASSERTIONS_FAIL_COUNT=0
-	TESTCASE_ASSERTIONS_SUCCESS_COUNT=0
-}
-
-array_contain_element() {
-	local -n P_ARRAY="$1"
-	local ELEMENT="$2"
-	
-	for iter in ${P_ARRAY[@]}; do
-		if [[ "$iter" == "$ELEMENT" ]]; then
-			return "$TRUE"
-		fi	
-	done
-	
-	return "$FALSE"
-}
+include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
+include_file "$SRC_DIR_PATH/sh_unit_util.sh"
 
 display_statistics() {
 	echo ""
