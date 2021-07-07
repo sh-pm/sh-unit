@@ -76,7 +76,7 @@ assert_start_with(){
 	export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
 	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
 	
-	if [[ ! -z "$1" && ! -z "$2" && "$1" =~ .*"$2" ]]; then
+	if [[ ! -z "$1" && ! -z "$2" && "$1" =~ ^"$2".* ]]; then
 	
 		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 		
@@ -87,7 +87,7 @@ assert_start_with(){
 	else
 		echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 				
-		if [[ ! -z "$1" || ! -z "$2" ]]; then 
+		if [[ -z "$1" || -z "$2" ]]; then 
 			echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: Receive empty param(s): 1->|$1|, 2->|$2|${ECHO_COLOR_NC}"		
 		else
 			echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: |$1| NOT start with |$2|${ECHO_COLOR_NC}"		
@@ -110,7 +110,7 @@ assert_end_with(){
 	export ASSERTIONS_TOTAL_COUNT=$((ASSERTIONS_TOTAL_COUNT+1))
 	export TESTCASE_ASSERTIONS_TOTAL_COUNT=$((TESTCASE_ASSERTIONS_TOTAL_COUNT+1))
 	
-	if [[ ! -z "$1" && ! -z "$2" && "$1" =~ "$2".* ]]; then
+	if [[ ! -z "$1" && ! -z "$2" && "$1" =~ .*"$2"$ ]]; then
 	
 		echo -e "$( get_caller_info ): ${ECHO_COLOR_GREEN}Assert Success! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 		
@@ -121,7 +121,7 @@ assert_end_with(){
 	else
 		echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! $ASSERT_DESCRIPTION${ECHO_COLOR_NC}"
 				
-		if [[ ! -z "$1" || ! -z "$2" ]]; then 
+		if [[ -z "$1" || -z "$2" ]]; then 
 			echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: Receive empty param(s): 1->|$1|, 2->|$2|${ECHO_COLOR_NC}"		
 		else
 			echo -e "${ECHO_COLOR_RED}     ${FUNCNAME[0]}: |$1| NOT end with |$2|${ECHO_COLOR_NC}"		

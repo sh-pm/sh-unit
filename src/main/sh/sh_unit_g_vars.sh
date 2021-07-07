@@ -3,7 +3,6 @@
 source ../../../bootstrap.sh
 
 define_sh_unit_global_variables() {
-
 	export TEST_FUNCTION_PREFIX="test_"
 	export TEST_FILENAME_SUFIX="_test.sh"
 	
@@ -30,6 +29,6 @@ reset_g_test_counters() {
 
 reset_testcase_counters() {
 	export TESTCASE_ASSERTIONS_TOTAL_COUNT=0
-	export TESTCASE_ASSERTIONS_FAIL_COUNT=1
+	export TESTCASE_ASSERTIONS_FAIL_COUNT=0
 	export TESTCASE_ASSERTIONS_SUCCESS_COUNT=0
 }

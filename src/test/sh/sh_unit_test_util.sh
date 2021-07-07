@@ -7,18 +7,14 @@ finish_test_case() {
 	export TEST_EXECUTION_STATUS="$FALSE"
 	export LAST_TESTCASE_EXECUTION_STATUS="$FALSE"
 	
-	#echo "--STACK CALL:start-----------------"
-	#for x in $(seq 0 $(("${#BASH_SOURCE[@]}" )) ); do
-	#	echo "[$x] - $( basename ${BASH_SOURCE[x]} ) -> ${FUNCNAME[x]} (l.${BASH_LINENO[x]})" 
-	#done
-	#echo "--STACK CALL:end-----------------"
-	
-	echo "--STACK CALL:start-----------------"
+	echo ""
+	echo "--STACK:------------------------------"
 	for ((i=0;i<${#FUNCNAME[@]}-1;i++))
     do
-      echo " $i: ${BASH_SOURCE[$i+1]}:${BASH_LINENO[$i]} ${FUNCNAME[$i]}(...)"
+      echo " $i: $( basename ${BASH_SOURCE[$i+1]} ) (l.${BASH_LINENO[$i]}): ${FUNCNAME[$i]}"
     done
-    echo "--STACK CALL:end-----------------"
+    echo "--------------------------------------"
+    echo ""
 	
 	 
 	exit 1
