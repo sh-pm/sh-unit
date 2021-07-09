@@ -7,7 +7,7 @@ include_file "$TEST_DIR_PATH/base/sh_unit_test_base.sh"
 # ======================================
 # SUT
 # ======================================
-include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
+# ATIPICAL TEST: See include inside test function ...
 
 # ======================================
 # "Set-Up"
@@ -58,7 +58,7 @@ test_define_sh_unit_global_variables() {
 	sh_unit_assert_var_NOT_exists "$LAST_TESTCASE_EXECUTION_STATUS"    "${!LAST_TESTCASE_EXECUTION_STATUS@}"
 	
 	#-------------------------------
-	define_sh_unit_global_variables
+	include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 	#-------------------------------
 	
 	ensure_true_and_false_bootstrap_global_vars

@@ -4,8 +4,6 @@ source ../../../bootstrap.sh
 
 include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 
-define_sh_unit_global_variables
-
 get_caller_info(){
 	echo "$( basename "${BASH_SOURCE[2]}" ) (l. ${BASH_LINENO[1]})"
 }

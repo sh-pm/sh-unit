@@ -41,3 +41,5 @@ reset_testcase_counters() {
 	export TESTCASE_ASSERTIONS_FAIL_COUNT=0
 	export TESTCASE_ASSERTIONS_SUCCESS_COUNT=0
 }
+
+define_sh_unit_global_variables
