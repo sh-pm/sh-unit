@@ -2,7 +2,7 @@
 
 source ../../../bootstrap.sh
 
-include_file "$TEST_DIR_PATH/sh_unit_test_util.sh"
+include_file "$TEST_DIR_PATH/base/sh_unit_test_base.sh"
 
 # ======================================
 # SUT
@@ -13,6 +13,8 @@ include_file "$SRC_DIR_PATH/asserts.sh"
 # "Set-Up"
 # ======================================
 set_up() {
+	init_sh_unit_internal_tests_execution
+	
 	define_sh_unit_global_variables
 }
 set_up
@@ -22,6 +24,8 @@ set_up
 # ======================================
 tear_down() {
 	define_sh_unit_global_variables
+	
+	finish_sh_unit_internal_tests_execution
 }
 trap "tear_down" EXIT
 
@@ -29,14 +33,16 @@ trap "tear_down" EXIT
 # Before each TestCase Start
 # ======================================
 before_testcase_start() {
-	define_sh_unit_global_variables
+	reset_g_test_execution_status
+	reset_g_test_counters
 }
 
 # ======================================
 # After each TestCase Finish
 # ======================================
 after_testcase_finish() {
-	define_sh_unit_global_variables
+	reset_g_test_execution_status
+	reset_g_test_counters
 }
 
 # ======================================
@@ -232,7 +238,93 @@ test_assert_end_with() {
 	after_testcase_finish 
 }
 
+test_assert_array_contains() {
+	local ARRAY=( "one" "two" "three" "four" "testing" )
+	
+	assert_array_contains ARRAY "three" 
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"
+	
+	assert_array_contains ARRAY "one" 
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"
+	
+	assert_array_contains ARRAY "two" 
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"	
+	
+	assert_array_contains ARRAY "four" 
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"
+	
+	assert_array_contains ARRAY "testing" 
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"
+		
+}
+
+test_assert_array_not_contains() {
+	local ARRAY=( "one" "two" "three" "four" "testing" )
+	
+	assert_array_not_contains ARRAY "0" 
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_not_contains NOT return expected \$TRUE value"
+		
+	assert_array_not_contains ARRAY "test" 
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_not_contains NOT return expected \$TRUE value"
+	
+	assert_array_not_contains ARRAY "four" 
+	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_not_contains NOT return expected \$FALSE value"
+}
+
+test_assert_array_contains_values() {
+	local ARRAY
+	local VALUES
+	
+	ARRAY=( "one" "two" "three" "four" "testing" )
+	
+	VALUES=( "two" "three" "four" )
+	assert_array_contains_values ARRAY VALUES  
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains_values NOT return expected \$TRUE value"
+		
+	VALUES=( "two" "three" "four" "FIVE" )
+	assert_array_contains_values ARRAY VALUES 
+	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_values NOT return expected \$FALSE value"
+}
+
+test_assert_array_contains_only_this_values() {
+	local ARRAY
+	local VALUES
+	
+	ARRAY=( "one" "two" "three" "four" "testing" )
+	
+	VALUES=( "one" "two" "three" "four" "testing" )
+	assert_array_contains_only_this_values ARRAY VALUES  
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$TRUE value"
+		
+	VALUES=( "one" "two" "three" "four" )
+	assert_array_contains_only_this_values ARRAY VALUES 
+	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$FALSE value"
+	
+	VALUES=( "one" "two" "three" "four" "testing" "OTHER" )
+	assert_array_contains_only_this_values ARRAY VALUES  
+	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$FALSE value"
+	
+	VALUES=( "OTHER" "one" "two" "three" "four" "testing" )
+	assert_array_contains_only_this_values ARRAY VALUES  
+	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$FALSE value"
+	
+	VALUES=( "one" "two" "3" "4" "testing" )
+	assert_array_contains_only_this_values ARRAY VALUES  
+	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$FALSE value"
+	
+	VALUES=( "testing" "two" "one" "four" "three" )
+	assert_array_contains_only_this_values ARRAY VALUES  
+	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$TRUE value"
+}
+
+# ======================================
+# RUN TESTS!
+# ======================================
+test_get_caller_info
 test_assert_equals
 test_assert_contains
 test_assert_start_with
 test_assert_end_with
+test_assert_array_contains
+test_assert_array_contains_values
+test_assert_contains_only_this_values

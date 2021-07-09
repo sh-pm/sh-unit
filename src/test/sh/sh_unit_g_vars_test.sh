@@ -2,7 +2,7 @@
 
 source ../../../bootstrap.sh
 
-include_file "$TEST_DIR_PATH/sh_unit_test_util.sh"
+include_file "$TEST_DIR_PATH/base/sh_unit_test_base.sh"
 
 # ======================================
 # SUT
@@ -13,7 +13,7 @@ include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 # "Set-Up"
 # ======================================
 set_up() {
-	echo "set_up nothing to do"
+	init_sh_unit_internal_tests_execution
 }
 set_up
 
@@ -21,7 +21,7 @@ set_up
 # "Teardown"
 # ======================================
 tear_down() {
-	echo "tear_down nothing to do!"
+	finish_sh_unit_internal_tests_execution
 }
 trap "tear_down" EXIT
 
@@ -54,6 +54,8 @@ test_define_sh_unit_global_variables() {
 	sh_unit_assert_var_NOT_exists "$TESTCASE_ASSERTIONS_TOTAL_COUNT"   "${!TESTCASE_ASSERTIONS_TOTAL_COUNT@}"
 	sh_unit_assert_var_NOT_exists "$TESTCASE_ASSERTIONS_FAIL_COUNT"    "${!TESTCASE_ASSERTIONS_FAIL_COUNT@}"
 	sh_unit_assert_var_NOT_exists "$TESTCASE_ASSERTIONS_SUCCESS_COUNT" "${!TESTCASE_ASSERTIONS_SUCCESS_COUNT@}"
+	sh_unit_assert_var_NOT_exists "$TEST_EXECUTION_STATUS"             "${!TEST_EXECUTION_STATUS@}"
+	sh_unit_assert_var_NOT_exists "$LAST_TESTCASE_EXECUTION_STATUS"    "${!LAST_TESTCASE_EXECUTION_STATUS@}"
 	
 	#-------------------------------
 	define_sh_unit_global_variables
@@ -75,6 +77,11 @@ test_define_sh_unit_global_variables() {
 	sh_unit_assert_var_exists_and_value_is_equal "$TESTCASE_ASSERTIONS_TOTAL_COUNT"   "0"        "${!TESTCASE_ASSERTIONS_TOTAL_COUNT@}"
 	sh_unit_assert_var_exists_and_value_is_equal "$TESTCASE_ASSERTIONS_FAIL_COUNT"    "0"        "${!TESTCASE_ASSERTIONS_FAIL_COUNT@}"
 	sh_unit_assert_var_exists_and_value_is_equal "$TESTCASE_ASSERTIONS_SUCCESS_COUNT" "0"        "${!TESTCASE_ASSERTIONS_SUCCESS_COUNT@}"
+	sh_unit_assert_var_exists_and_value_is_equal "$TEST_EXECUTION_STATUS"             "$TRUE"    "${!TEST_EXECUTION_STATUS@}"
+	sh_unit_assert_var_exists_and_value_is_equal "$LAST_TESTCASE_EXECUTION_STATUS"    "$TRUE"    "${!LAST_TESTCASE_EXECUTION_STATUS@}"	
 }
 
+# ======================================
+# RUN Tests
+# ======================================
 test_define_sh_unit_global_variables

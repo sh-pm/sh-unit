@@ -3,16 +3,19 @@
 source ../../../bootstrap.sh
 
 string_start_with(){
-	STRING=$1
-	SUBSTRING=$2
+
+	local STRING=$1
+	local SUBSTRING=$2
+	
 	if [[ $STRING == "$SUBSTRING"* ]]; then
-		return 0;
+		return "$TRUE";
 	else
-		return 1;
+		return "$FALSE";
 	fi
 }
 
 array_contain_element() {
+
 	local -n P_ARRAY="$1"
 	local ELEMENT="$2"
 	

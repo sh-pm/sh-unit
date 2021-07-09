@@ -44,17 +44,26 @@ display_testcase_execution_statistics() {
 	echo "   - Total:   $TESTCASE_ASSERTIONS_TOTAL_COUNT"
 }
 
+display_finish_execution_of_files() {
+  	echo -e "\n########################################################################################################"
+	echo -e "\nFinish execution of files\n"
+}
+
 update_testcase_counters() {
-	if [[ "$LAST_TESTCASE_EXECUTION_STATUS" != "$STATUS_OK" ]]; then
-		export TESTCASE_FAIL_COUNT=$((TESTCASE_FAIL_COUNT+1))
-	else
+	if [[ "$LAST_TESTCASE_EXECUTION_STATUS" == "$STATUS_OK" ]]; then
 		export TESTCASE_SUCCESS_COUNT=$((TESTCASE_SUCCESS_COUNT+1))
+	else
+		export TESTCASE_FAIL_COUNT=$((TESTCASE_FAIL_COUNT+1))
 	fi
 	
 	export TESTCASE_TOTAL_COUNT=$((TESTCASE_TOTAL_COUNT+1))
 }
 
 display_testcase_execution_start() {
+	local FUNCTION_NAME
+	
+	FUNCTION_NAME="$1"
+	
 	echo ""
 	echo "---[ $FUNCTION_NAME ]----------------------------------------------------------"
 	echo ""
@@ -70,24 +79,6 @@ display_file_execution_start() {
     echo "Start execution of test case(s)  ..."
 }
 
-run_test_case() {
-	local TESTCASE_NAME
-	
-	TESTCASE_NAME="$1"
-
-	display_testcase_execution_start
-			
-	LAST_TESTCASE_EXECUTION_STATUS="$STATUS_OK"
-	
-	reset_testcase_counters
-	
-	$TESTCASE_NAME # this line call/execute a test function!
-	
-	display_testcase_execution_statistics
-	
-	update_testcase_counters
-}
-
 get_all_function_names_from_file() {
 	local SCRIPT_NAME_TO_RUN_TESTS
 	
@@ -101,54 +92,7 @@ get_all_test_function_names_from_file() {
 	
 	SCRIPT_NAME_TO_RUN_TESTS="$1"
 	
-	get_all_function_names_from_file "$SCRIPT_NAME_TO_RUN_TESTS" | grep -E '^'$TEST_FUNCTION_PREFIX'*' 
-}
-
-run_testcases_in_file() {
-
-	local SCRIPT_NAME_TO_RUN_TESTS
-	local -n P_FUNCTIONS_TO_RUN
-	
-	SCRIPT_NAME_TO_RUN_TESTS="$1"
-	P_FUNCTIONS_TO_RUN="$2"
-	
-    display_file_execution_start "$SCRIPT_NAME_TO_RUN_TESTS"
-     
-	source "$SCRIPT_NAME_TO_RUN_TESTS"
-
-    TEST_FUNCTIONS_IN_FILE=( $( get_all_test_function_names_from_file "$SCRIPT_NAME_TO_RUN_TESTS" ) );
-    
-    reset_g_test_counters
-	
-	for FUNCTION_NAME in "${TEST_FUNCTIONS_IN_FILE[@]}"
-	do
-		if (( ${#P_FUNCTIONS_TO_RUN[@]} > 0 )); then
-		 	if ( array_contain_element P_FUNCTIONS_TO_RUN "$FUNCTION_NAME" ); then		 			
-				run_test_case "$FUNCTION_NAME"
-			fi
-		else
-			run_test_case "$FUNCTION_NAME"
-		fi
-	done
-	
-	display_finish_execution
-	
-	display_statistics
-	
-	display_final_result
-	
-	if [[ "$TEST_EXECUTION_STATUS" == "$STATUS_OK" ]]; then
-		return "$TRUE";
-	else		
-		return "$FALSE";
-	fi
-}
-
-run_all_tests_in_this_script() {
-
-	SCRIPT_NAME_TO_RUN_TESTS="$(basename "${BASH_SOURCE[1]}")"
-
-	run_testcases_in_file "$SCRIPT_NAME_TO_RUN_TESTS"
+	grep -E '^[[:space:]]*([[:alnum:]_]+[[:space:]]*\(\)|function[[:space:]]+[[:alnum:]_]+)' "$SCRIPT_NAME_TO_RUN_TESTS" | grep -E '^test_*' | tr \(\)\}\{ ' ' | sed 's/^[ \t]*//;s/[ \t]*$//'
 }
 
 run_testcases_in_files() {
@@ -189,17 +133,72 @@ run_testcases_in_files() {
 	  	done
   	# Run WITHOUT filters	  	
 	else
-		FUNCTIONS_TO_RUN=( )
+		FUNCTIONS_TO_RUN=( $( get_all_test_function_names_from_file ) )
 		if (( "${#P_ALL_TEST_FILES[@]}" > 0 )); then
 			for file in "${P_ALL_TEST_FILES[@]}"
 			do
 				run_testcases_in_file "$file" FUNCTIONS_TO_RUN
 			done
 		else
-			shpm_log "No test files found!"
+			echo "No test files found!"
 		fi
   	fi
   	
-  	shpm_log "\n########################################################################################################"
-	shpm_log "\nFinish execution of files\n"
+	display_finish_execution_of_files
+}
+
+run_testcases_in_file() {
+
+	local SCRIPT_NAME_TO_RUN_TESTS
+	local -n P_FUNCTIONS_TO_RUN
+	
+	SCRIPT_NAME_TO_RUN_TESTS="$1"
+	P_FUNCTIONS_TO_RUN="$2"
+	
+    display_file_execution_start "$SCRIPT_NAME_TO_RUN_TESTS"
+     
+	source "$SCRIPT_NAME_TO_RUN_TESTS"
+
+    TEST_FUNCTIONS_IN_FILE=( $( get_all_test_function_names_from_file "$SCRIPT_NAME_TO_RUN_TESTS" ) );    
+	
+	for FUNCTION_NAME in "${TEST_FUNCTIONS_IN_FILE[@]}"
+	do
+		if (( ${#P_FUNCTIONS_TO_RUN[@]} > 0 )); then
+		 	if ( array_contain_element P_FUNCTIONS_TO_RUN "$FUNCTION_NAME" ); then		 			
+				run_test_case "$FUNCTION_NAME"
+			fi
+		else
+			run_test_case "$FUNCTION_NAME"
+		fi
+	done
+	
+	display_finish_execution
+	
+	display_statistics
+	
+	display_final_result
+	
+	if [[ "$TEST_EXECUTION_STATUS" == "$STATUS_OK" ]]; then
+		return "$TRUE";
+	else		
+		return "$FALSE";
+	fi
+}
+
+run_test_case() {
+	local TESTCASE_NAME
+	
+	TESTCASE_NAME="$1"
+
+	display_testcase_execution_start "$TESTCASE_NAME"
+			
+	LAST_TESTCASE_EXECUTION_STATUS="$STATUS_OK"
+	
+	reset_testcase_counters
+	
+	$TESTCASE_NAME # this line call/execute a test function!
+	
+	display_testcase_execution_statistics
+	
+	update_testcase_counters
 }
