@@ -23,7 +23,7 @@ display_statistics() {
 
 display_final_result() {
 	echo "(*) FINAL RESULT of execution:"	
-	if [[ "$TEST_EXECUTION_STATUS" != "$STATUS_OK" ]]; then 
+	if [[ "$TEST_EXECUTION_STATUS" != "$STATUS_SUCCESS" ]]; then 
 		echo -e "      ${ECHO_COLOR_RED}FAIL!!!${ECHO_COLOR_NC}"
 	else		
 		echo -e "      ${ECHO_COLOR_GREEN}OK${ECHO_COLOR_NC}"
