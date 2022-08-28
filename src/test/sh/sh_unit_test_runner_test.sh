@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-source ../../../bootstrap.sh
+. ../../../bootstrap.sh
 
-include_file "$TEST_DIR_PATH/base/sh_unit_test_base.sh"
-include_file "$SRC_DIR_PATH/asserts.sh"
+include_file "$TEST_DIR_PATH/base/sh_unit_base4_unit_test_itself.sh"
+include_file "$SRC_DIR_PATH/sh_unit_asserts.sh"
 
 # ======================================
 # SUT
 # ======================================
-include_file "$SRC_DIR_PATH/test_runner.sh"
+include_file "$SRC_DIR_PATH/sh_unit_test_runner.sh"
 
 # ======================================
 # "Set-Up"

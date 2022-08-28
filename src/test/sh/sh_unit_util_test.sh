@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source ../../../bootstrap.sh
+. ../../../bootstrap.sh
 
-include_file "$TEST_DIR_PATH/base/sh_unit_test_base.sh"
+include_file "$TEST_DIR_PATH/base/sh_unit_base4_unit_test_itself.sh"
 
 # ======================================
 # SUT
@@ -61,27 +61,27 @@ test_string_start_with() {
 
 test_array_contain_element() {
 
-	local TEST_ARRAY
+	local test_array
 
-	TEST_ARRAY=( \
+	test_array=( \
 		"one"
 		"TWO"
 		"Three"
 	)
 
-	array_contain_element TEST_ARRAY "one"
+	array_contain_element test_array "one"
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last array_contain_element call NOT return expected \$TRUE value"
 	
-	array_contain_element TEST_ARRAY "TWO"
+	array_contain_element test_array "TWO"
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last array_contain_element call NOT return expected \$TRUE value"
 	
-	array_contain_element TEST_ARRAY "Three"
+	array_contain_element test_array "Three"
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last array_contain_element call NOT return expected \$TRUE value"
 	
-	array_contain_element TEST_ARRAY "ONE"
+	array_contain_element test_array "ONE"
 	eval "[[ $? == $FALSE ]]" || finish_test_case "last array_contain_element call NOT return expected \$FALSE value"
 	
-	array_contain_element TEST_ARRAY "four"
+	array_contain_element test_array "four"
 	eval "[[ $? == $FALSE ]]" || finish_test_case "last array_contain_element call NOT return expected \$FALSE value"
 }
 

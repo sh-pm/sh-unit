@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-source ../../../bootstrap.sh
+. ../../../bootstrap.sh
 
 string_start_with(){
 
-	local STRING=$1
-	local SUBSTRING=$2
+	local string=$1
+	local substring=$2
 	
-	if [[ $STRING == "$SUBSTRING"* ]]; then
+	if [[ $string == "$substring"* ]]; then
 		return "$TRUE";
 	else
 		return "$FALSE";
@@ -16,11 +16,11 @@ string_start_with(){
 
 array_contain_element() {
 
-	local -n P_ARRAY="$1"
-	local ELEMENT="$2"
+	local -n p_array="$1"
+	local element="$2"
 	
-	for iter in ${P_ARRAY[@]}; do
-		if [[ "$iter" == "$ELEMENT" ]]; then
+	for iter in "${p_array[@]}"; do
+		if [[ "$iter" == "$element" ]]; then
 			return "$TRUE"
 		fi	
 	done

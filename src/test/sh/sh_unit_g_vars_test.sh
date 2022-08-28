@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source ../../../bootstrap.sh
+. ../../../bootstrap.sh
 
-include_file "$TEST_DIR_PATH/base/sh_unit_test_base.sh"
+include_file "$TEST_DIR_PATH/base/sh_unit_base4_unit_test_itself.sh"
 
 # ======================================
 # SUT
