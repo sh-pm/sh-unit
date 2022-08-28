@@ -32,8 +32,8 @@ export BOOTSTRAP_FILENAME
 export DEPENDENCIES_FILENAME="deps.sh"
 
 # -- "Boolean's" ------------------
-export TRUE=0
-export FALSE=1
+export readonly TRUE=0
+export readonly FALSE=1
 
 # -- Test Coverage ----------------
 export MIN_PERCENT_TEST_COVERAGE=80
