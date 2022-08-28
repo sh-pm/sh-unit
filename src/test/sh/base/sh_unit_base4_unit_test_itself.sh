@@ -2,6 +2,7 @@
 
 . ../../../bootstrap.sh
 
+include_file "$TEST_DIR_PATH/base/sh_unit_base4_echo_redirect_output_in_unit_tests.sh"
 include_file "$SRC_DIR_PATH/sh_unit_log.sh" 
 
 reset_sh_unit_tests_execution_status() {
@@ -62,11 +63,11 @@ sh_unit_print_array_for_msg_error() {
 	local -n aux_array
 	aux_array=$1
 	
-	echo -e "("
+	sh_unit_log -e "("
 	for array_item in "${aux_array[@]}"; do
-		echo -e "   |$array_item|"
+		sh_unit_log -e "   |$array_item|"
 	done 
-	echo -e ")"
+	sh_unit_log -e ")"
 }
 
 array_dump() {
@@ -81,7 +82,7 @@ array_dump() {
 	done 
 	aux_str="$aux_str"" )";
 	
-	echo "$aux_str"
+	sh_unit_log "$aux_str"
 }
 
 init_sh_unit_internal_tests_execution() {
@@ -104,6 +105,6 @@ check_sh_unit_internal_tests_result() {
 	else
 		sh_unit_log -e "               ${ECHO_COLOR_RED}Result: FAIL!!!${ECHO_COLOR_NC}"
 	fi
-	echo "=============================================================="
-	echo ""
+	sh_unit_log "=============================================================="
+	sh_unit_log ""
 }

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-source ../../../bootstrap.sh
+. ../../../bootstrap.sh
 
+include_file "$TEST_DIR_PATH/base/sh_unit_base4_echo_redirect_output_in_unit_tests.sh"
 include_file "$TEST_DIR_PATH/base/sh_unit_base4_unit_test_itself.sh"
 
 # ======================================
@@ -16,6 +17,8 @@ set_up() {
 	init_sh_unit_internal_tests_execution
 	
 	define_sh_unit_global_variables
+	
+	enable_stdout_log_redirect
 }
 set_up
 
@@ -23,6 +26,8 @@ set_up
 # "Teardown"
 # ======================================
 tear_down() {
+	disable_stdout_log_redirect
+
 	define_sh_unit_global_variables
 	
 	finish_sh_unit_internal_tests_execution
@@ -51,11 +56,11 @@ after_testcase_finish() {
 test_get_caller_info() {
 	before_testcase_start
 	
-	local EXPECTED
+	local expected
 	
-	EXPECTED="$( basename "${BASH_SOURCE[1]}" ) (l. ${BASH_LINENO[0]})"
-	if [[ "$( get_caller_info )" != "$EXPECTED" ]]; then
-		finish_test_case "get_caller_info not generate expected content. Expected: |$EXPECTED|, Generated: |$( get_caller_info )|" 
+	expected="$( basename "${BASH_SOURCE[1]}" ) (l. ${BASH_LINENO[0]})"
+	if [[ "$( get_caller_info )" != "$expected" ]]; then
+		finish_test_case "get_caller_info not generate expected content. Expected: |$expected|, Generated: |$( get_caller_info )|" 
 	fi
 	
 	after_testcase_finish
@@ -77,7 +82,7 @@ test_assert_equals() {
 
 	assert_equals "1" "1"
 	
-	eval "[[ $? == 0 ]]" || finish_test_case "last assert_equal not return expected \$TRUE value"
+	eval "[[ $? == 0 ]]" || finish_test_case "last assert_equal not return expected \$TRUE value"	
 
 	#--------------Assertion call---------------|------------Var value----------------|-Expected-|-----------Var name------------------	
 	sh_unit_assert_var_exists_and_value_is_equal "$ASSERTIONS_TOTAL_COUNT"            "1"        "${!ASSERTIONS_TOTAL_COUNT@}"
@@ -91,9 +96,9 @@ test_assert_equals() {
 
 	assert_equals "1" "0"
 	
-	eval "[[ $? == 1 ]]" || finish_test_case "last assert_equal not return expected \$FALSE value"
+	eval "[[ $? != 0 ]]" || finish_test_case "last assert_equal not return expected \$FALSE value"	
 
-	#--------------Assertion call---------------|------------Var value----------------|-Expected-|-----------Var name------------------	
+	#--------------Assertion call---------------|------------Var value----------------|-array-|-----------Var name------------------	
 	sh_unit_assert_var_exists_and_value_is_equal "$ASSERTIONS_TOTAL_COUNT"            "2"        "${!ASSERTIONS_TOTAL_COUNT@}"
 	sh_unit_assert_var_exists_and_value_is_equal "$ASSERTIONS_FAIL_COUNT"             "1"        "${!ASSERTIONS_FAIL_COUNT@}"
 	sh_unit_assert_var_exists_and_value_is_equal "$ASSERTIONS_SUCCESS_COUNT"          "1"        "${!ASSERTIONS_SUCCESS_COUNT@}"
@@ -239,81 +244,81 @@ test_assert_end_with() {
 }
 
 test_assert_array_contains() {
-	local ARRAY=( "one" "two" "three" "four" "testing" )
+	local array=( "one" "two" "three" "four" "testing" )
 	
-	assert_array_contains ARRAY "three" 
+	assert_array_contains array "three" 
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"
 	
-	assert_array_contains ARRAY "one" 
+	assert_array_contains array "one" 
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"
 	
-	assert_array_contains ARRAY "two" 
+	assert_array_contains array "two" 
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"	
 	
-	assert_array_contains ARRAY "four" 
+	assert_array_contains array "four" 
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"
 	
-	assert_array_contains ARRAY "testing" 
+	assert_array_contains array "testing" 
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains NOT return expected \$TRUE value"
 		
 }
 
 test_assert_array_not_contains() {
-	local ARRAY=( "one" "two" "three" "four" "testing" )
+	local array=( "one" "two" "three" "four" "testing" )
 	
-	assert_array_not_contains ARRAY "0" 
+	assert_array_not_contains array "0" 
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_not_contains NOT return expected \$TRUE value"
 		
-	assert_array_not_contains ARRAY "test" 
+	assert_array_not_contains array "test" 
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_not_contains NOT return expected \$TRUE value"
 	
-	assert_array_not_contains ARRAY "four" 
+	assert_array_not_contains array "four" 
 	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_not_contains NOT return expected \$FALSE value"
 }
 
 test_assert_array_contains_values() {
-	local ARRAY
-	local VALUES
+	local array
+	local values
 	
-	ARRAY=( "one" "two" "three" "four" "testing" )
+	array=( "one" "two" "three" "four" "testing" )
 	
-	VALUES=( "two" "three" "four" )
-	assert_array_contains_values ARRAY VALUES  
+	values=( "two" "three" "four" )
+	assert_array_contains_values array values  
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains_values NOT return expected \$TRUE value"
 		
-	VALUES=( "two" "three" "four" "FIVE" )
-	assert_array_contains_values ARRAY VALUES 
+	values=( "two" "three" "four" "FIVE" )
+	assert_array_contains_values array values 
 	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_values NOT return expected \$FALSE value"
 }
 
 test_assert_array_contains_only_this_values() {
-	local ARRAY
-	local VALUES
+	local array
+	local values
 	
-	ARRAY=( "one" "two" "three" "four" "testing" )
+	array=( "one" "two" "three" "four" "testing" )
 	
-	VALUES=( "one" "two" "three" "four" "testing" )
-	assert_array_contains_only_this_values ARRAY VALUES  
+	values=( "one" "two" "three" "four" "testing" )
+	assert_array_contains_only_this_values array values  
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$TRUE value"
 		
-	VALUES=( "one" "two" "three" "four" )
-	assert_array_contains_only_this_values ARRAY VALUES 
+	values=( "one" "two" "three" "four" )
+	assert_array_contains_only_this_values array values 
 	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$FALSE value"
 	
-	VALUES=( "one" "two" "three" "four" "testing" "OTHER" )
-	assert_array_contains_only_this_values ARRAY VALUES  
+	values=( "one" "two" "three" "four" "testing" "OTHER" )
+	assert_array_contains_only_this_values array values  
 	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$FALSE value"
 	
-	VALUES=( "OTHER" "one" "two" "three" "four" "testing" )
-	assert_array_contains_only_this_values ARRAY VALUES  
+	values=( "OTHER" "one" "two" "three" "four" "testing" )
+	assert_array_contains_only_this_values array values  
 	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$FALSE value"
 	
-	VALUES=( "one" "two" "3" "4" "testing" )
-	assert_array_contains_only_this_values ARRAY VALUES  
+	values=( "one" "two" "3" "4" "testing" )
+	assert_array_contains_only_this_values array values  
 	eval "[[ $? == $FALSE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$FALSE value"
 	
-	VALUES=( "testing" "two" "one" "four" "three" )
-	assert_array_contains_only_this_values ARRAY VALUES  
+	values=( "testing" "two" "one" "four" "three" )
+	assert_array_contains_only_this_values array values  
 	eval "[[ $? == $TRUE ]]" || finish_test_case "last assert_array_contains_only_this_values NOT return expected \$TRUE value"
 }
 

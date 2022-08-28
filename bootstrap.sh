@@ -92,16 +92,6 @@ fi
 if [[ -z "$TEST_DIR_PATH" ]]; then
 	export TEST_DIR_PATH="$ROOT_DIR_PATH/$TEST_DIR_SUBPATH"
 	internal_debug "TEST_DIR_PATH: $TEST_DIR_PATH"
-	
-	export FOLDERNAME_4TEST="folder4test"
-	export FILENAME_4TEST="file4test"
-	export PROJECTNAME_4TEST="sh-project-only-4tests"	
-	export PROJECTVERSION_4TEST="v0.2.0"
-	export NEWBRANCH_4TEST="newbranch4test"
-	export CHANGELOG_4TEST="changelog4test"
-	
-	export STDOUT_REDIRECT_FILENAME_4TEST="stdout_redirect_4test"
-	export ENABLE_STDOUT_REDIRECT_4TEST="$FALSE"
 fi
 
 if [[ -z "$TEST_RESOURCES_DIR_PATH" ]]; then
@@ -124,8 +114,19 @@ if [[ -z "$TMP_DIR_PATH" ]]; then
 fi
 
 if [[ -z "$STDOUT_REDIRECT_FILEPATH_4TEST" ]]; then
+	export STDOUT_REDIRECT_FILENAME_4TEST="stdout_redirect_4test"
+	export ENABLE_STDOUT_REDIRECT_4TEST="$FALSE"
+
 	export STDOUT_REDIRECT_FILEPATH_4TEST="$TMP_DIR_PATH/$STDOUT_REDIRECT_FILENAME_4TEST"
 fi
+
+# -- files, folders, branchs, etc for unit tests -------------------
+export FOLDERNAME_4TEST="folder4test"
+export FILENAME_4TEST="file4test"
+export PROJECTNAME_4TEST="sh-project-only-4tests"	
+export PROJECTVERSION_4TEST="v0.2.0"
+export NEWBRANCH_4TEST="newbranch4test"
+export CHANGELOG_4TEST="changelog4test"
 
 # -- manifest file -------------------
 export MANIFEST_FILENAME="manifest"

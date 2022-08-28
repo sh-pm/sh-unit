@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ../../../bootstrap.sh
+. ../../../bootstrap.sh
 
 
 # ======================================

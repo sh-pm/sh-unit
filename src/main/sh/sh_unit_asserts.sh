@@ -291,7 +291,7 @@ assert_array_contains_values() {
 		done
 		
 		if [[ "$item_found" != "$TRUE" ]]; then
-			echo -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! Expect item |$expected_item| not found in array: (${ECHO_COLOR_NC}"
+			sh_unit_log -e "$( get_caller_info ): ${ECHO_COLOR_RED}Assert FAIL! Expect item |$expected_item| not found in array: (${ECHO_COLOR_NC}"
 			sh_unit_print_array_for_msg_error p_array
 		
 			return "$FALSE"

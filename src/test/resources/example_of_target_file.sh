@@ -1,6 +1,6 @@
 
 function_example1() {
-	echo "abc123"
+	echo "file example_of_target_file.sh, function example1: string for unit testes abc123"
 }
 
 function_example2() {

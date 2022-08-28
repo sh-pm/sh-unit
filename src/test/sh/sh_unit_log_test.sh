@@ -2,17 +2,17 @@
 
 . ../../../bootstrap.sh
 
+include_file "$TEST_DIR_PATH/base/sh_unit_base4_echo_redirect_output_in_unit_tests.sh"
+
 # ======================================
 # SUT
 # ======================================
 include_file "$SRC_DIR_PATH/sh_unit_log.sh"
 
-SH_UNIT_LOG_STRING_4_TEST="---> this string was generated only for unit test of sh_unit_log function <---"
-
 # ======================================
 # "Set-Up"
 # ======================================
-
+SH_UNIT_LOG_STRING_4_TEST="---> this string was generated only for unit test of sh_unit_log function <---"
 
 # ======================================
 # "Teardown"
@@ -32,27 +32,6 @@ SH_UNIT_LOG_STRING_4_TEST="---> this string was generated only for unit test of 
 # ======================================
 # Tests
 # ======================================
-enable_stdout_log_redirect() {
-	export ENABLE_STDOUT_REDIRECT_4TEST="$TRUE"
-	if [ ! -e "$STDOUT_REDIRECT_FILEPATH_4TEST" ]
-	then
-		local actual_dir_path="$( pwd )"
-		cd "$TMP_DIR_PATH"	
-	    touch "$STDOUT_REDIRECT_FILENAME_4TEST"
-		cd "$actual_dir_path"	
-	fi	
-}
-
-disable_stdout_log_redirect() {
-	export ENABLE_STDOUT_REDIRECT_4TEST="$FALSE"
-	if [ -e "$STDOUT_REDIRECT_FILEPATH_4TEST" ]
-	then
-		local actual_dir_path="$( pwd )"
-		cd "$TMP_DIR_PATH"	
-	    rm "$STDOUT_REDIRECT_FILENAME_4TEST"
-		cd "$actual_dir_path"	
-	fi
-}
 
 finish_one_testcase_with_success(){
 	export TEST_EXECUTION_STATUS="$STATUS_SUCCESS"

@@ -15,6 +15,7 @@ include_file "$SRC_DIR_PATH/sh_unit_test_runner.sh"
 # ======================================
 set_up() {
 	init_sh_unit_internal_tests_execution
+	enable_stdout_log_redirect
 }
 set_up
 
@@ -22,6 +23,7 @@ set_up
 # "Teardown"
 # ======================================
 tear_down() {
+	disable_stdout_log_redirect
 	finish_sh_unit_internal_tests_execution
 }
 trap "tear_down" EXIT

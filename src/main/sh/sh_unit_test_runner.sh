@@ -88,7 +88,7 @@ display_file_execution_start() {
 }
 
 get_all_function_names_from_file() {
-	local p_all_test_files
+	local script_name_to_run_tests
 	
 	script_name_to_run_tests="$1"
 	

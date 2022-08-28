@@ -2,7 +2,7 @@
 
 source ../../../bootstrap.sh
 
-include_file "$SRC_DIR_PATH/asserts.sh"
+include_file "$SRC_DIR_PATH/sh_unit_asserts.sh"
 
 # ======================================
 # SUT
