@@ -3,7 +3,7 @@
 . ../../../bootstrap.sh
 
 # ---------------------------------
-# SH-Unit internal log with enhancements 
+# sh-unit internal log with enhancements 
 # to increase testability of string printings 
 # using echo command 
 # Globals:
