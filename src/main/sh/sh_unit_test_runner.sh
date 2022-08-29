@@ -121,23 +121,93 @@ display_test_file_delimiter() {
 display_file_execution_start() {
   display_test_file_delimiter "$1"
   sh_unit_log "Location: $1"
-    sh_unit_log "Start execution of test case(s)  ..."
+  sh_unit_log "Start execution of test case(s)  ..."
 }
 
+#----------------------------------------
+# Return all function names existing in $1 filenam. 
+#
+# Arguments:
+#  $1 - Name o file containing shell script functions   
+# 
+# Algoritm:
+# - Search in $script_name_to_run_tests lines containing function declaration (with ou without "function" reserved word)
+# - Remove chars: (){}
+# - "Trim" string
+#
+# Globals:
+#   None
+#
+# External executables:
+#   grep
+#   tr
+#   sed
+#
+# Other function dependencies:
+#   None
+#
+# Outputs:
+#  All function names in array of strings
+#
+# Returns:
+#  All function names in array of strings
+#   
+# Documentation:
+#   Created in 29 de ago. de 2022
+#   Updated in 29 de ago. de 2022
+#----------------------------------------
 get_all_function_names_from_file() {
   local script_name_to_run_tests
   
   script_name_to_run_tests="$1"
   
-  grep -E '^[[:space:]]*([[:alnum:]_]+[[:space:]]*\(\)|function[[:space:]]+[[:alnum:]_]+)' "$script_name_to_run_tests" | tr \(\)\}\{ ' ' | sed 's/^[ \t]*//;s/[ \t]*$//'
+  grep -E '^[[:space:]]*([[:alnum:]_]+[[:space:]]*\(\)|function[[:space:]]+[[:alnum:]_]+)' "$script_name_to_run_tests" \
+    | tr \(\)\}\{ ' ' \
+    | sed 's/^[ \t]*//;s/[ \t]*$//'
 }
 
+#----------------------------------------
+# Return all function names existing in $1 filenam start with $TEST_FUNCTION_PREFIX 
+#
+# Arguments:
+#  $1 - Name o file containing shell script functions   
+# 
+# Algoritm:
+# - Search in $script_name_to_run_tests lines containing function declaration (with ou without "function" reserved word), 
+#   where function name start with $TEST_FUNCTION_PREFIX
+# - Remove chars: (){}
+# - "Trim" string
+#
+# Globals:
+#   None
+#
+# External executables:
+#   grep
+#   tr
+#   sed
+#
+# Other function dependencies:
+#   None
+#
+# Outputs:
+#  All function names in array of strings
+#
+# Returns:
+#  All function names in array of strings
+#   
+# Documentation:
+#   Created in 29 de ago. de 2022
+#   Updated in 29 de ago. de 2022
+#----------------------------------------
 get_all_test_function_names_from_file() {
   local script_name_to_run_tests
   
   script_name_to_run_tests="$1"
   
-  grep -E '^[[:space:]]*([[:alnum:]_]+[[:space:]]*\(\)|function[[:space:]]+[[:alnum:]_]+)' "$script_name_to_run_tests" | grep -E '^test_*' | tr \(\)\}\{ ' ' | sed 's/^[ \t]*//;s/[ \t]*$//'
+  grep -E '^[[:space:]]*([[:alnum:]_]+[[:space:]]*\(\)|function[[:space:]]+[[:alnum:]_]+)' "$script_name_to_run_tests" \
+    | grep -E '^'"$TEST_FUNCTION_PREFIX"'*' \
+    | tr \(\)\}\{ ' ' \
+    | sed 's/^[ \t]*//;s/[ \t]*$//'
 }
 
 run_testcases_in_files() {
@@ -195,10 +265,54 @@ run_testcases_in_files() {
   display_finish_execution_of_files
 }
 
+#----------------------------------------
+# Run test cases in a single shell script file.
+# IF $2 array was NOT informed,
+#   Run ALL test case functions
+# ELSE 
+#   Run ONLY the function names presents in array
+#
+# Arguments:
+#   $1 - name of shell script file with test cases (functions) to run
+#   $2 - function names (test cases) to be executed in script (OPTIONAL) 
+# 
+# Algoritm:
+# IF $2 array was NOT informed,
+#   Run ALL test case functions
+# ELSE 
+#   Run ONLY the function names presents in array 
+#
+# Globals:
+#   TEST_EXECUTION_STATUS
+#   STATUS_OK
+#   TRUE
+#   FALSE
+#
+# External executables:
+#   None
+#
+# Other function dependencies:
+#  sh_unit_test_runner.sh::display_file_execution_start
+#  sh_unit_test_runner.sh::get_all_test_function_names_from_file
+#  sh_unit_test_runner.sh::array_contain_element
+#  sh_unit_test_runner.sh::run_test_case
+#  sh_unit_test_runner.sh::display_finish_execution
+#  sh_unit_test_runner.sh::display_statistics
+#  sh_unit_test_runner.sh::display_final_result
+#
+# Outputs:
+# - 
+#
+# Returns:
+#   
+# Documentation:
+#   Created in 29 de ago. de 2022
+#   Updated in 29 de ago. de 2022
+#----------------------------------------
 run_testcases_in_file() {
 
   local script_name_to_run_tests
-  local -n p_functions_to_run
+  local -n p_functions_to_run #optional
   
   script_name_to_run_tests="$1"
   p_functions_to_run="$2"
@@ -233,6 +347,51 @@ run_testcases_in_file() {
   fi
 }
 
+#----------------------------------------
+# Run a single existing test case function.
+#
+# Arguments:
+#   $1 - Test Case function name
+# 
+# Algoritm:
+# - display text indicating test case execution start
+# - reset LAST_TESTCASE_EXECUTION_STATUS to STATUS_OK
+# - reset_testcase_counters
+# - call/execute a test case function name
+# - display_testcase_execution_statistics before test case execution finish
+# - update test case counters
+#
+# Globals:
+#  LAST_TESTCASE_EXECUTION_STATUS
+#  STATUS_OK
+#
+# External executables:
+#  None
+#
+# Other function dependencies:
+#  sh_unit_test_runner.sh::display_testcase_execution_start  
+#  sh_unit_test_runner.sh::reset_testcase_counters
+#  sh_unit_test_runner.sh::display_testcase_execution_statistics
+#  sh_unit_test_runner.sh::display_testcase_execution_statistics
+#  sh_unit_test_runner.sh::update_testcase_counters
+#
+# Outputs:
+# ------------------
+# 
+# ---[ $testcase_name ]----------------------------------------------------------
+#  Assertions executed in $testcase_name:
+#   - Success: $TESTCASE_ASSERTIONS_SUCCESS_COUNT
+#   - Fail:    $TESTCASE_ASSERTIONS_FAIL_COUNT
+#   - Total:   $TESTCASE_ASSERTIONS_TOTAL_COUNT
+# ------------------
+#
+# Returns:
+#  None
+#   
+# Documentation:
+#   Created in 29 de ago. de 2022
+#   Updated in 29 de ago. de 2022
+#----------------------------------------
 run_test_case() {
   local testcase_name
   
