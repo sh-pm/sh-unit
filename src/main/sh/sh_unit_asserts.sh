@@ -25,8 +25,8 @@ include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 #      sh_unit_assert.sh (l. 23)
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 get_caller_info(){
   echo "$( basename "${BASH_SOURCE[2]}" ) (l. ${BASH_LINENO[1]})"
@@ -89,8 +89,8 @@ get_caller_info(){
 #   $TRUE if assertion success, $FALSE otherwise
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_equals(){
   
@@ -178,8 +178,8 @@ assert_equals(){
 #   $TRUE if assertion success, $FALSE otherwise
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_contains(){
   
@@ -267,8 +267,8 @@ assert_contains(){
 #   $TRUE if assertion success, $FALSE otherwise
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_start_with(){
   
@@ -360,8 +360,8 @@ assert_start_with(){
 #   $TRUE if assertion success, $FALSE otherwise
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_end_with(){
   
@@ -455,8 +455,8 @@ assert_end_with(){
 #   $TRUE if assertion success, $FALSE otherwise
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_true(){
   local value="$1"
@@ -553,8 +553,8 @@ assert_true(){
 #   $TRUE if assertion success, $FALSE otherwise
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_false(){
   local value="$1"
@@ -631,8 +631,8 @@ assert_false(){
 #   Ever return $FALSE
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_fail(){
 
@@ -686,8 +686,8 @@ assert_fail(){
 #   Ever return $TRUE
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_success(){
 
@@ -745,8 +745,8 @@ assert_success(){
 #   Return $TRUE if $2 element found in $1 array, $FALSE otherwise.
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_array_contains() {
   local -n p_array=$1
@@ -807,8 +807,8 @@ assert_array_contains() {
 #   Return $FALSE if $2 element found in $1 array, $TRUE otherwise.
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_array_not_contains() {
   local -n p_array=$1
@@ -882,8 +882,8 @@ assert_array_not_contains() {
 #   Return $TRUE if all elements of $2 was found in $1 array, $FALSE otherwise.
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_array_contains_values() {
   local -n p_array
@@ -1016,8 +1016,8 @@ assert_array_contains_values() {
 #   Return $TRUE   
 #
 # Documentation:
-#   Was created in 2022-08-29
-#   Last update in 2022-08-29
+#   Created in 2022-08-29
+#   Updated in 2022-08-29
 #----------------------------------------
 assert_array_contains_only_this_values() {
   local -n p_array

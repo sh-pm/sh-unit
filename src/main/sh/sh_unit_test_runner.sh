@@ -6,6 +6,43 @@ include_file "$SRC_DIR_PATH/sh_unit_log.sh"
 include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 include_file "$SRC_DIR_PATH/sh_unit_util.sh"
 
+#----------------------------------------
+# Used by Test Runner to display statistics in final of unit test execution.
+#
+# Arguments:
+#  $1 - script_name_to_run_tests
+# 
+# Globals:
+#  ASSERTIONS_TOTAL_COUNT
+#  ASSERTIONS_SUCCESS_COUNT
+#  ASSERTIONS_FAIL_COUNT
+#  TESTCASE_TOTAL_COUNT
+#  TESTCASE_SUCCESS_COUNT
+#  TESTCASE_FAIL_COUNT 
+#
+# External executables:
+#   None
+#
+# Other function dependencies:
+#   sh_unit_log.sh::sh_unit_log
+#
+# Outputs:
+# ---------
+#
+#   (*) ASSERTIONS executed in $script_name_to_run_tests: "
+#       - Total:   $ASSERTIONS_TOTAL_COUNT"
+#       - Success: $ASSERTIONS_SUCCESS_COUNT"
+#       - Fail:    $ASSERTIONS_FAIL_COUNT"
+#   "
+#   (*) TEST CASES executed in $script_name_to_run_tests: "
+#       - Total:   $TESTCASE_TOTAL_COUNT"
+#       - Success: $TESTCASE_SUCCESS_COUNT"
+#       - Fail:    $TESTCASE_FAIL_COUNT"
+# --------- 
+#
+# Returns:
+#   
+#----------------------------------------
 display_statistics() {
 
   local script_name_to_run_tests
@@ -53,7 +90,7 @@ display_testcase_execution_statistics() {
 }
 
 display_finish_execution_of_files() {
-    sh_unit_log -e "\n########################################################################################################"
+  sh_unit_log -e "\n########################################################################################################"
   sh_unit_log -e "\nFinish execution of files\n"
 }
 
