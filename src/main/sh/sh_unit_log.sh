@@ -2,18 +2,46 @@
 
 . ../../../bootstrap.sh
 
-# ---------------------------------
-# sh-unit internal log with enhancements 
-# to increase testability of string printings 
-# using echo command 
-# Globals:
-#   $ENABLE_STDOUT_REDIRECT_4TEST
-#   $STDOUT_REDIRECT_FILEPATH_4TEST
+#----------------------------------------
+# sh-unit internal log with enhancements to increase testability of string printings using echo command. 
+#
+# Examples:
+# ------------------
+#   sh_unit_log "xpto"
+#   sh_unit_log -e "xpto"
+# ------------------
+#
 # Arguments:
-#   the "-e" param to (OPTIONAL) 
-#   the string to be printed
-#   
-# ---------------------------------
+#   the "-e" param (OPTIONAL) 
+#   the string to be printed   
+#   NOTE: IF receive 2 params string to be printed is $2, otherwise is $1
+# 
+# Algoritm:
+# - TODO: Write me!
+#
+# Globals:
+#   ENABLE_STDOUT_REDIRECT_4TEST
+#   STDOUT_REDIRECT_FILEPATH_4TEST
+#   TMP_DIR_PATH
+#
+# External executables:
+#   cd
+#   rm
+#   touch
+#   echo
+#
+# Other function dependencies:
+#   None
+#
+# Outputs:
+# - TODO: Write me!  
+#
+# Returns:
+# - IF stdout redirection is ENABLED
+#     nothing returned 
+#   ELSE
+#     string received 
+#----------------------------------------
 sh_unit_log() {
   local p_string
   
