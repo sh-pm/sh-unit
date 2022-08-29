@@ -30,11 +30,11 @@ reset_testcase_counters() {
 define_sh_unit_global_variables() {
   if [[ -z "$SH_UNIT_GLOBAL_VARS_ALREADY_DEFINED" || "$SH_UNIT_GLOBAL_VARS_ALREADY_DEFINED" == "$FALSE" ]]; then
   
-    export TEST_FUNCTION_PREFIX="test_"
-    export TEST_FILENAME_SUFIX="_test.sh"
+    export readonly TEST_FUNCTION_PREFIX="test_"
+    export readonly TEST_FILENAME_SUFIX="_test.sh"
     
-    export STATUS_SUCCESS="$TRUE"
-    export STATUS_ERROR="$FALSE"
+    export readonly STATUS_SUCCESS="$TRUE"
+    export readonly STATUS_ERROR="$FALSE"
     
     reset_g_test_execution_status
     
