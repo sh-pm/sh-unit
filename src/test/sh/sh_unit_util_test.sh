@@ -88,5 +88,7 @@ test_array_contain_element() {
 # ======================================
 # RUN Tests
 # ======================================
-test_string_start_with
-test_array_contain_element
+[[ -z "$IS_TESTRUNNER_EXECUTION" || "$IS_TESTRUNNER_EXECUTION" != "$TRUE" ]] && {
+  test_string_start_with
+  test_array_contain_element
+}

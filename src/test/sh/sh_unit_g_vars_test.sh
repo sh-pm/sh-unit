@@ -84,4 +84,6 @@ test_define_sh_unit_global_variables() {
 # ======================================
 # RUN Tests
 # ======================================
-test_define_sh_unit_global_variables
+[[ -z "$IS_TESTRUNNER_EXECUTION" || "$IS_TESTRUNNER_EXECUTION" != "$TRUE" ]] && {
+  test_define_sh_unit_global_variables
+}

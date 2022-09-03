@@ -48,6 +48,48 @@ after_testcase_finish() {
 # Tests
 # ======================================
 
+export IS_TESTRUNNER_EXECUTION=""
+
+
+test_set_env_testrunner_execution_var() {
+  # Prepare test context
+  if [[ -n "$IS_TESTRUNNER_EXECUTION" ]]; then
+    finish_test_case "Expected that IS_TESTRUNNER_EXECUTION var in this moment is not set, but the var already is set in environment!"
+  fi
+    
+  # Exec test
+  set_env_testrunner_execution_var
+  
+  # Asserts
+  if [[ -z "$IS_TESTRUNNER_EXECUTION" ]]; then
+    finish_test_case "Expected that IS_TESTRUNNER_EXECUTION var in this moment is set, but the var is NOT set!"
+  fi
+  
+  if [[ "$IS_TESTRUNNER_EXECUTION" != "$TRUE" ]]; then
+    finish_test_case "IS_TESTRUNNER_EXECUTION var: value expected is |$TRUE|, but obtained |$IS_TESTRUNNER_EXECUTION|!"
+  fi
+  
+  # Clear test context
+  unset IS_TESTRUNNER_EXECUTION  
+}
+
+test_unset_env_testrunner_execution_var() {
+  
+  # Prepare test context
+  export IS_TESTRUNNER_EXECUTION="$TRUE"
+    
+  # Exec test
+  unset_env_testrunner_execution_var
+  
+  # Asserts
+  if [[ -n "$IS_TESTRUNNER_EXECUTION" ]]; then
+    finish_test_case "Expected that IS_TESTRUNNER_EXECUTION var in this moment is not set, but the var already is set in environment!"
+  fi
+  
+  # Clear test context
+  unset IS_TESTRUNNER_EXECUTION  
+}
+
 test_get_all_function_names_from_file() {
   before_testcase_start
 
@@ -123,7 +165,7 @@ test_run_test_case() {
    
   run_test_case "test_function_example1"
   
-    #--------------Assertion call---------------|------------Var value----------------|-Expected-|-----------Var name------------------  
+  #--------------Assertion call---------------|------------Var value----------------|-Expected-|-----------Var name------------------  
   sh_unit_assert_var_exists_and_value_is_equal "$STATUS_SUCCESS"                    "$TRUE"    "${!STATUS_SUCCESS@}"
   sh_unit_assert_var_exists_and_value_is_equal "$STATUS_ERROR"                      "$FALSE"   "${!STATUS_ERROR@}"
   sh_unit_assert_var_exists_and_value_is_equal "$TEST_FUNCTION_PREFIX"              "test_"    "${!TEST_FUNCTION_PREFIX@}"  
@@ -141,7 +183,7 @@ test_run_test_case() {
   
   run_test_case "test_function_example2"
   
-    #--------------Assertion call---------------|------------Var value----------------|-Expected-|-----------Var name------------------  
+  #--------------Assertion call---------------|------------Var value----------------|-Expected-|-----------Var name------------------  
   sh_unit_assert_var_exists_and_value_is_equal "$STATUS_SUCCESS"                    "$TRUE"    "${!STATUS_SUCCESS@}"
   sh_unit_assert_var_exists_and_value_is_equal "$STATUS_ERROR"                      "$FALSE"   "${!STATUS_ERROR@}"
   sh_unit_assert_var_exists_and_value_is_equal "$TEST_FUNCTION_PREFIX"              "test_"    "${!TEST_FUNCTION_PREFIX@}"  
@@ -283,8 +325,12 @@ test_run_testcases_in_files() {
 # ======================================
 # RUN Tests
 # ======================================
-test_get_all_function_names_from_file
-test_get_all_test_function_names_from_file
-test_run_testcases_in_files
-test_run_test_case
-test_run_testcases_in_file
+[[ -z "$IS_TESTRUNNER_EXECUTION" || "$IS_TESTRUNNER_EXECUTION" != "$TRUE" ]] && {
+  test_set_env_testrunner_execution_var
+  test_unset_env_testrunner_execution_var
+  test_get_all_function_names_from_file
+  test_get_all_test_function_names_from_file
+  test_run_testcases_in_files
+  test_run_test_case
+  test_run_testcases_in_file
+}

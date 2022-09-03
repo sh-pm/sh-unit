@@ -22,12 +22,12 @@ finish_test_case() {
   sh_unit_log "--STACK:------------------------------"
   
   for ((i=0;i<${#FUNCNAME[@]}-1;i++))
-    do
-      sh_unit_log " $i: $( basename ${BASH_SOURCE[$i+1]} ) (l.${BASH_LINENO[$i]}): ${FUNCNAME[$i]}"
-    done
+  do
+    sh_unit_log " $i: $( basename ${BASH_SOURCE[$i+1]} ) (l.${BASH_LINENO[$i]}): ${FUNCNAME[$i]}"
+  done
     
-    sh_unit_log "--------------------------------------"
-    sh_unit_log ""
+  sh_unit_log "--------------------------------------"
+  sh_unit_log ""
    
   SH_UNIT_TEST_EXECUTION_SUCCESS="$FALSE"
 }

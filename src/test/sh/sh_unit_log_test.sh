@@ -171,4 +171,9 @@ test_sh_unit_log() {
   finish_one_testcase_with_success
 }
 
-test_sh_unit_log
+# ======================================
+# RUN Tests
+# ======================================
+[[ -z "$IS_TESTRUNNER_EXECUTION" || "$IS_TESTRUNNER_EXECUTION" != "$TRUE" ]] && {
+  test_sh_unit_log
+}

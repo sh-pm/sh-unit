@@ -325,11 +325,13 @@ test_assert_array_contains_only_this_values() {
 # ======================================
 # RUN TESTS!
 # ======================================
-test_get_caller_info
-test_assert_equals
-test_assert_contains
-test_assert_start_with
-test_assert_end_with
-test_assert_array_contains
-test_assert_array_contains_values
-test_assert_array_contains_only_this_values
+[[ -z "$IS_TESTRUNNER_EXECUTION" || "$IS_TESTRUNNER_EXECUTION" != "$TRUE" ]] && {
+  test_get_caller_info
+  test_assert_equals
+  test_assert_contains
+  test_assert_start_with
+  test_assert_end_with
+  test_assert_array_contains
+  test_assert_array_contains_values
+  test_assert_array_contains_only_this_values
+}

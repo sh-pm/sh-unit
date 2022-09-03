@@ -7,6 +7,64 @@ include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 include_file "$SRC_DIR_PATH/sh_unit_util.sh"
 
 #----------------------------------------
+# Set the variable that indicate was a Test Runner Execution in curse.
+#
+# Arguments:
+#   None   
+#
+# Globals:
+#   Define and export IS_TESTRUNNER_EXECUTION var    
+#
+# External executables:
+#   None
+#
+# Other function dependencies:
+#   None
+#
+# Outputs:
+#   None
+#
+# Returns:
+#   None
+#
+# Documentation:
+#   Created in 2 de set. de 2022
+#   Updated in 2 de set. de 2022
+#----------------------------------------
+set_env_testrunner_execution_var() {
+  export IS_TESTRUNNER_EXECUTION="$TRUE"
+}
+
+#----------------------------------------
+# Unset/"DELETE" from the environment the variable that indicate was a Test Runner Execution in curse. 
+#
+# Arguments:
+#   None   
+#
+# Globals:
+#   Unset IS_TESTRUNNER_EXECUTION var from environment    
+#
+# External executables:
+#   None
+#
+# Other function dependencies:
+#   None
+#
+# Outputs:
+#   None
+#
+# Returns:
+#   None
+#
+# Documentation:
+#   Created in 2 de set. de 2022
+#   Updated in 2 de set. de 2022
+#----------------------------------------
+unset_env_testrunner_execution_var() {
+  unset IS_TESTRUNNER_EXECUTION
+}
+
+#----------------------------------------
 # Used by Test Runner to display statistics in final of unit test execution.
 #
 # Arguments:
