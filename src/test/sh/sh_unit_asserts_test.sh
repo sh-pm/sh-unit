@@ -2,6 +2,9 @@
 
 . ../../../bootstrap.sh
 
+# ======================================
+# Dependencies
+# ======================================
 include_file "$TEST_DIR_PATH/base/sh_unit_base4_echo_redirect_output_in_unit_tests.sh"
 include_file "$TEST_DIR_PATH/base/sh_unit_base4_unit_test_itself.sh"
 
@@ -323,7 +326,7 @@ test_assert_array_contains_only_this_values() {
 }
 
 # ======================================
-# RUN TESTS!
+# RUN Tests
 # ======================================
 [[ -z "$IS_TESTRUNNER_EXECUTION" || "$IS_TESTRUNNER_EXECUTION" != "$TRUE" ]] && {
   test_get_caller_info

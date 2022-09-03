@@ -2,6 +2,9 @@
 
 . ../../../bootstrap.sh
 
+# ======================================
+# Dependencies
+# ======================================
 include_file "$TEST_DIR_PATH/base/sh_unit_base4_echo_redirect_output_in_unit_tests.sh"
 
 # ======================================

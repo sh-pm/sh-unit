@@ -2,6 +2,14 @@
 
 . ../../../bootstrap.sh
 
+# ======================================
+# Dependencies
+# ======================================
+# None
+
+# ======================================
+# Functions
+# ======================================
 #----------------------------------------
 # sh-unit internal log with enhancements to increase testability of string printings using echo command. 
 #
@@ -100,3 +108,8 @@ sh_unit_log() {
     fi
   fi
 }
+
+# ======================================
+# Run functions
+# ======================================
+# None

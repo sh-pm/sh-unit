@@ -2,9 +2,15 @@
 
 . ../../../bootstrap.sh
 
+# ======================================
+# Dependencies
+# ======================================
 include_file "$SRC_DIR_PATH/sh_unit_log.sh"
 include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 
+# ======================================
+# Functions
+# ======================================
 #----------------------------------------
 # Return the filename and line when this function was called.
 #
@@ -1078,3 +1084,8 @@ assert_array_contains_only_this_values() {
 
   return "$TRUE"  
 }
+
+# ======================================
+# Run functions
+# ======================================
+# None

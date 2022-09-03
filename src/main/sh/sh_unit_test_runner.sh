@@ -2,10 +2,16 @@
 
 . ../../../bootstrap.sh
 
+# ======================================
+# Dependencies
+# ======================================
 include_file "$SRC_DIR_PATH/sh_unit_log.sh"
 include_file "$SRC_DIR_PATH/sh_unit_g_vars.sh"
 include_file "$SRC_DIR_PATH/sh_unit_util.sh"
 
+# ======================================
+# Functions
+# ======================================
 #----------------------------------------
 # Set the variable that indicate was a Test Runner Execution in curse.
 #
@@ -183,7 +189,7 @@ display_file_execution_start() {
 }
 
 #----------------------------------------
-# Return all function names existing in $1 filenam. 
+# Return all function names existing in $1 filename. 
 #
 # Arguments:
 #  $1 - Name o file containing shell script functions   
@@ -467,3 +473,8 @@ run_test_case() {
   
   update_testcase_counters
 }
+
+# ======================================
+# Run functions
+# ======================================
+# None
